@@ -35,7 +35,7 @@ const Dashboard = () => {
   return (
     <div
       className="dashboard"
-      style={{ textAlign: "center", marginTop: "50px" }}
+      style={{ textAlign: "center" }}
     >
       <h1>Collaborative Code Editor</h1>
 
@@ -49,7 +49,7 @@ const Dashboard = () => {
           value={pageId}
           onChange={(e) => setPageId(e.target.value)}
           placeholder="Enter Page ID"
-          style={{ padding: "5px", width: "200px" }}
+          style={{ padding: "5px", paddingLeft: "10px", width: "200px", height: "30px" }}
         />
         <button onClick={handleOpenPage} style={{ marginLeft: "10px" }}>
           Open Page
