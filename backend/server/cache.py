@@ -15,7 +15,7 @@ class LRUCache:
         If the key is not found, return an empty string.
         """
         if key not in self.cache:
-            return ""  # Key not found
+            return None  # Key not found
         # Move the key to the end to mark it as recently used
         self.cache.move_to_end(key)
         return self.cache[key]
@@ -39,3 +39,6 @@ class LRUCache:
         Return a list of all keys currently contained in the cache.
         """
         return list(self.cache.keys())
+    
+    def clear(self) -> None:
+        self.cache.clear()

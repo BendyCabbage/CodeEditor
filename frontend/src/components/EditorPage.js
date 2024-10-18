@@ -17,9 +17,8 @@ const EditorPage = () => {
     const fetchPage = async () => {
         const response = await sendRequest(`/pages/${pageId}`);
         if (!response.ok) throw new Error('Page not found');
-        console.log(response);
+
         const data = await response.json();
-        console.log(data);
         setCode(data.content);
     };
 
