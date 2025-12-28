@@ -1,0 +1,116 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+.project-editor {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    background: #1e1e1e;
+    overflow: hidden;
+}
+
+.sidebar {
+    width: 260px;
+    min-width: 200px;
+    max-width: 400px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: #252526;
+    resize: horizontal;
+    overflow: hidden;
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    background: #1e1e1e;
+}
+
+.editor-container {
+    flex: 1;
+    min-height: 0;
+    position: relative;
+}
+
+.no-file-open {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    background: linear-gradient(145deg, #1e1e1e 0%, #252526 100%);
+}
+
+.welcome-message {
+    text-align: center;
+    padding: 2rem;
+    max-width: 480px;
+}
+
+.welcome-message h2 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #cccccc;
+    margin: 0 0 1rem 0;
+}
+
+.welcome-message p {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.95rem;
+    color: #808080;
+    margin: 0 0 1.5rem 0;
+}
+
+.git-info {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.branch-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: rgba(88, 166, 255, 0.1);
+    border: 1px solid rgba(88, 166, 255, 0.3);
+    border-radius: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: #58a6ff;
+}
+
+.error-state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: #1e1e1e;
+}
+
+.error-content {
+    text-align: center;
+    padding: 2rem;
+}
+
+.error-content h2 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.5rem;
+    color: #f85149;
+    margin: 0 0 1rem 0;
+}
+
+.error-content p {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1rem;
+    color: #8b949e;
+    margin: 0;
+}
+
+.monaco-editor .margin,
+.monaco-editor .editor-scrollable {
+    background: #1e1e1e !important;
+}
+

@@ -1,0 +1,115 @@
+.editor-tabs {
+    background: #252526;
+    border-bottom: 1px solid #1e1e1e;
+    height: 35px;
+    min-height: 35px;
+    display: flex;
+    align-items: stretch;
+}
+
+.tabs-container {
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+}
+
+.tabs-container::-webkit-scrollbar {
+    display: none;
+}
+
+.tab {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 12px;
+    height: 100%;
+    background: #2d2d2d;
+    border-right: 1px solid #1e1e1e;
+    cursor: pointer;
+    font-family: 'JetBrains Mono', 'Consolas', monospace;
+    font-size: 0.8rem;
+    color: #9d9d9d;
+    transition: background-color 0.1s ease;
+    white-space: nowrap;
+    position: relative;
+}
+
+.tab::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: transparent;
+}
+
+.tab:hover {
+    background: #323232;
+}
+
+.tab.active {
+    background: #1e1e1e;
+    color: #ffffff;
+}
+
+.tab.active::after {
+    background: #007acc;
+}
+
+.tab-icon {
+    font-size: 0.7rem;
+}
+
+.tab-name {
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dirty-indicator {
+    color: #e0e0e0;
+    font-size: 0.7rem;
+    margin-left: -2px;
+}
+
+.close-tab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border: none;
+    background: transparent;
+    color: #808080;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 1rem;
+    line-height: 1;
+    padding: 0;
+    opacity: 0;
+    transition: opacity 0.1s ease, background-color 0.1s ease;
+}
+
+.tab:hover .close-tab {
+    opacity: 1;
+}
+
+.tab.dirty .close-tab {
+    opacity: 0;
+}
+
+.tab.dirty:hover .close-tab {
+    opacity: 1;
+}
+
+.tab.dirty:hover .dirty-indicator {
+    display: none;
+}
+
+.close-tab:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+}
+
