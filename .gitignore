@@ -4,3 +4,5 @@ venv
 backend/server/__pycache__
 backend/server/__pycache__/cache.cpython-310.pyc
 .vscode
+frontend/build/
+frontend/.env

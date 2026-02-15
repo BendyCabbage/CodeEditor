@@ -5,15 +5,32 @@ import { Editor } from '@monaco-editor/react';
 import io from 'socket.io-client';
 import sendRequest from '../util/sendRequest';
 
-const socket = io('http://localhost:5000'); // Connect to the backend
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000';
 
 const EditorPage = () => {
   const { pageId } = useParams(); // Retrieve pageId from the URL
   const [code, setCode] = useState("// Loading...");
   const editorRef = useRef(null);
+  const isRemoteUpdate = useRef(false);
+  const socketRef = useRef(null);
+
+  // Initialize socket connection
+  useEffect(() => {
+    const socket = io(BACKEND_URL, {
+      transports: ['websocket']
+    });
+    socketRef.current = socket;
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
 
   // Fetch the page content when the component loads
   useEffect(() => {
+    const socket = socketRef.current;
+    if (!socket) return;
+
     const fetchPage = async () => {
         const response = await sendRequest(`/pages/${pageId}`);
         if (!response.ok) throw new Error('Page not found');
@@ -25,21 +42,28 @@ const EditorPage = () => {
     fetchPage();
 
     // Listen for real-time updates
-    socket.on('code_update', (data) => {
+    const handleUpdate = (data) => {
       if (data.id === pageId) {
+        isRemoteUpdate.current = true;
         setCode(data.content);
       }
-    });
+    };
 
-    return () => socket.off('code_update'); // Cleanup listener on unmount
+    socket.on('code_update', handleUpdate);
+
+    return () => socket.off('code_update', handleUpdate); // Cleanup listener on unmount
   }, [pageId]);
 
   const handleEditorDidMount = (editor) => {
     editorRef.current = editor;
 
     editor.onDidChangeModelContent(() => {
+      if (isRemoteUpdate.current) {
+        isRemoteUpdate.current = false;
+        return;
+      }
       const newContent = editorRef.current.getValue();
-      socket.emit('code_edit', { id: pageId, content: newContent });
+      socketRef.current.emit('code_edit', { id: pageId, content: newContent });
     });
   };
 

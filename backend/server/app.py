@@ -28,7 +28,7 @@ cache = LRUCache(100)
 load_dotenv()
 
 # PostgreSQL connection pool
-conn_pool = pool.SimpleConnectionPool(1, 20, host="localhost", database="code_editor", user=os.getenv("SQL_USERNAME"), password=os.getenv("SQL_PASSWORD"))
+conn_pool = pool.SimpleConnectionPool(1, 20, host=os.getenv("DATABASE_HOST", "localhost"), database=os.getenv("DATABASE_NAME", "code_editor"), user=os.getenv("SQL_USERNAME"), password=os.getenv("SQL_PASSWORD"))
 
 # Utility to generate a unique 8-character ID
 def generate_page_id():
@@ -101,7 +101,7 @@ def handle_code_edit(data):
     cache.set(page_id, new_content)
 
     # Broadcast the update to all other clients
-    emit('code_update', data, broadcast=True)
+    emit('code_update', data, broadcast=True, include_self=False)
 
 # Sync Cache with DB periodically
 def sync_cache_with_db():
@@ -125,10 +125,8 @@ def on_server_shutdown():
     cache.clear()
 
 def handle_signal(signum, frame):
-    print(f"Received signal {signum}. Syncing cache and shutting down.")
-    sync_cache_with_db()
-    cache.clear()
-    exit(0)
+    print(f"Received signal {signum}. Shutting down...")
+    socketio.stop()
 
 atexit.register(on_server_shutdown)
 signal.signal(signal.SIGINT, handle_signal)  # Ctrl+C
@@ -138,4 +136,4 @@ signal.signal(signal.SIGTERM, handle_signal)  # Termination
 eventlet.spawn_after(30, sync_cache_with_db)
 
 if __name__ == '__main__':
-    socketio.run(app, host='0.0.0.0', port=5000, debug=True, use_reloader=False)
+    socketio.run(app, host="0.0.0.0", port=int(os.getenv("PORT", 5000)), debug=os.getenv("FLASK_DEBUG", "false").lower() == "true", use_reloader=False)
