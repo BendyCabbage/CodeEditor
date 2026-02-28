@@ -28,7 +28,16 @@ cache = LRUCache(100)
 load_dotenv()
 
 # PostgreSQL connection pool
-conn_pool = pool.SimpleConnectionPool(1, 20, host=os.getenv("DATABASE_HOST", "localhost"), database=os.getenv("DATABASE_NAME", "code_editor"), user=os.getenv("SQL_USERNAME"), password=os.getenv("SQL_PASSWORD"))
+database_url = os.getenv("DATABASE_URL")
+if database_url:                                                                                                       
+    conn_pool = pool.SimpleConnectionPool(1, 20, dsn=database_url)                                                     
+else:                                                                                                                  
+    conn_pool = pool.SimpleConnectionPool(1, 20,                                                                       
+        host=os.getenv("DATABASE_HOST", "localhost"),                                                                  
+        database=os.getenv("DATABASE_NAME", "code_editor"),                                                     
+        user=os.getenv("SQL_USERNAME"),                                                                         
+        password=os.getenv("SQL_PASSWORD")
+    ) 
 
 # Utility to generate a unique 8-character ID
 def generate_page_id():
@@ -136,4 +145,4 @@ signal.signal(signal.SIGTERM, handle_signal)  # Termination
 eventlet.spawn_after(30, sync_cache_with_db)
 
 if __name__ == '__main__':
-    socketio.run(app, host="0.0.0.0", port=int(os.getenv("PORT", 5000)), debug=os.getenv("FLASK_DEBUG", "false").lower() == "true", use_reloader=False)
+    socketio.run(app, host="0.0.0.0", port=int(os.getenv("PORT", 8080)), debug=os.getenv("FLASK_DEBUG", "false").lower() == "true", use_reloader=False)
