@@ -4,3 +4,4 @@ Flask-Cors==5.0.0
 Flask-SocketIO==5.4.1
 psycopg2-binary==2.9.11
 python-dotenv==1.0.1
+ 
